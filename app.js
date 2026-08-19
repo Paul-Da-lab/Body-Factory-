@@ -86,7 +86,7 @@ function products(a){
  <div class="productrow row between"><div><b>${esc(p.name)}</b>${p.custom?' <span class="muted">• свой</span>':''}<br><span class="muted">${p.kcal} ккал / 100 г • ${p.protein} г белка</span></div>
  ${p.custom?`<button class="danger" onclick="delProduct(${p.id})">Удалить</button>`:""}</div>`).join("");
  a.innerHTML=`
- <div class="card"><div class="row between"><div class="title">🍎 Склад продуктов</div><button onclick="showAddProduct=true;render('products')">+ Добавить</button></div>
+ <div class="card"><div class="row between"><div class="title">🍎 Склад продуктов</div><button class="btn" onclick="showAddProduct=true;render('products')">+ Добавить</button></div>
  <div class="muted">Всего продуктов: ${db.products.length}. Свои продукты сохраняются на телефоне.</div></div>
  ${window.showAddProduct?`
  <div class="card"><div class="title">Новый продукт</div>
