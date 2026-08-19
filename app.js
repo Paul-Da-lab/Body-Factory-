@@ -83,22 +83,32 @@ function addFood(){
 function delFood(id){db.food=db.food.filter(x=>x.id!==id);save();render("food")}
 function products(a){
  let list=db.products.slice().sort((x,y)=>x.name.localeCompare(y.name)).map(p=>`
- <div class="productrow row between"><div><b>${esc(p.name)}</b>${p.custom?' <span class="muted">• свой</span>':''}<br><span class="muted">${p.kcal} ккал / 100 г • ${p.protein} г белка</span></div>
- ${p.custom?`<button class="danger" onclick="delProduct(${p.id})">Удалить</button>`:""}</div>`).join("");
- a.innerHTML=`
- <div class="card">
-     <div class="row between">
-         <div class="title">🍎 Склад продуктов</div>
-         <button class="btn" onclick="showAddProduct=true;render('products')">+ Добавить</button>
+ <div class="productrow row between">
+     <div>
+         <b>${esc(p.name)}</b>${p.custom?' <span class="muted">• свой</span>':''}<br>
+         <span class="muted">${p.kcal} ккал / 100 г • ${p.protein} г белка</span>
      </div>
+     ${p.custom?`<button class="danger" onclick="delProduct(${p.id})">Удалить</button>`:""}
+ </div>`).join("");
+ a.innerHTML=
+ `<div class="card">
+      <div class="row between">
+          <div class="title">🍎 Склад продуктов</div>
+          <button class="btn" onclick="showAddProduct=true;render('products')">+ Добавить</button>
+      </div>
  </div>
- <div class="muted">Всего продуктов: ${db.products.length}. Свои продукты сохраняются на телефоне.</div></div>
+ <div class="muted">Всего продуктов: ${db.products.length}. Свои продукты сохраняются на телефоне.</div>
  ${window.showAddProduct?`
  <div class="card"><div class="title">Новый продукт</div>
- <label>Название</label><input id="pn" placeholder="Например: Пельмени">
- <label>Ккал / 100 г</label><input id="pk" type="number" step=".1">
- <label>Белок / 100 г</label><input id="pp" type="number" step=".1">
- <div class="row"><button onclick="saveProduct()">Сохранить</button><button class="secondary" onclick="showAddProduct=false;render('products')">Отмена</button></div></div>`:""}
+     <label>Название</label><input id="pn" placeholder="Например: Пельмени">
+     <label>Ккал / 100 г</label><input id="pk" type="number" step=".1">
+     <label>Белок / 100 г</label><input id="pp" type="number" step=".1">
+     <div class="row">
+         <button onclick="saveProduct()">Сохранить</button>
+         <button class="secondary" onclick="showAddProduct=false;render('products')">Отмена</button>
+     </div>
+ </div>
+ `:""}
  <div class="card">${list}</div>`;
 }
 function saveProduct(){
@@ -153,7 +163,7 @@ function importData(ev){
  r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.products||!x.food||!x.days)throw 0;db=x;save();toast("Данные импортированы");render("settings")}catch{toast("Не удалось импортировать")}};
  r.readAsText(f)
 }
-let showAddProduct=false;
+window.showAddProduct=false;
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>render(b.dataset.screen));
 if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
 render("home");
